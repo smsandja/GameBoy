@@ -2,7 +2,8 @@
     <h1>{{ title }}</h1>
     <p>Do you want to play ?</p>
     <button class="startbutton" @click="start" :disabled="isPlaying">Start</button>
-    <block v-if="isPlaying" :delay="delay"/>
+    <block v-if="isPlaying" :delay="delay" @end="endGame"/>
+    <result v-if="showResult" :score="score" />
 </template>
 
 <script>
@@ -16,7 +17,9 @@ export default {
     return {
       title: "Welcome to our Game Party",
       isPlaying : false,
-      delay : null
+      delay : null,
+      score: null,
+      showResult: false
     }
   },
   methods : {
@@ -24,6 +27,12 @@ export default {
       this.isPlaying = true
       this.delay = 2000 + Math.random() * 5000
       console.log(this.delay)
+      this.showResult = false
+    },
+    endGame(reactionTime){
+      this.score = reactionTime
+      this.isPlaying = false
+      this.showResult = true
     }
   }
 }
@@ -46,5 +55,8 @@ export default {
   border-radius : 5px;
   color: white;
 }
-
+button[disabled]{
+  opacity: 0.2;
+  cursor: not-allowed;
+}
 </style>
